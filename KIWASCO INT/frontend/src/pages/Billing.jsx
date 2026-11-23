@@ -4,8 +4,9 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, LineChart, Line
 } from 'recharts'
-import { Receipt, Filter, TrendingUp } from 'lucide-react'
+import { Receipt, Filter, TrendingUp, Upload } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ImportModal from '../components/ImportModal'
 
 const fmt = (n) => n >= 1e6 ? `KES ${(n/1e6).toFixed(2)}M` : n >= 1e3 ? `KES ${(n/1e3).toFixed(1)}K` : `KES ${n?.toFixed(0)}`
 
@@ -29,6 +30,7 @@ export default function Billing() {
   const [comparison, setComp]   = useState([])
   const [loading, setLoading]   = useState(true)
   const [zoneFilter, setZoneFilter] = useState('')
+  const [showImport, setShowImport] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -72,6 +74,9 @@ export default function Billing() {
           <div className="page-header-sub">Monthly billing analytics, collection tracking, and zone revenue comparison</div>
         </div>
         <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <button className="btn btn-secondary" onClick={() => setShowImport(true)} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, padding: '8px 14px' }}>
+            <Upload size={14} /> Import Bills (CSV)
+          </button>
           <Filter size={14} color="var(--text-muted)" />
           <select className="form-select" value={zoneFilter}
             onChange={e => handleZoneChange(e.target.value)}
@@ -174,6 +179,24 @@ export default function Billing() {
           </div>
         </div>
       </div>
+
+      <ImportModal
+        isOpen={showImport}
+        onClose={() => setShowImport(false)}
+        title="Import Billing Records"
+        sampleHeaders={['account_number', 'bill_date', 'units_consumed', 'amount_billed', 'amount_paid']}
+        sampleRows={[
+          ['CBD-DOM-0001', '2024-05-01', '18.5', '1250.00', '1250.00'],
+          ['CBD-DOM-0002', '2024-05-01', '12.0', '850.00', '0.00'],
+          ['MIL-COM-0003', '2024-05-01', '45.0', '4800.00', '4800.00']
+        ]}
+        templateFileName="bills_import_template.csv"
+        onImport={(formData) => billsApi.importCsv(formData)}
+        onSuccess={() => {
+          billsApi.monthlyTrend(zoneFilter || undefined).then(t => setTrend(t.data)).catch(() => {})
+          billsApi.zoneCompare().then(c => setComp(c.data)).catch(() => {})
+        }}
+      />
     </div>
   )
 }

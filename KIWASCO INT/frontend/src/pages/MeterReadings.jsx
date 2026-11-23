@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { customersApi, meterReadingsApi, zonesApi } from '../api/client'
-import { Search, MapPin, Hash, CheckCircle2, User as UserIcon } from 'lucide-react'
+import { Search, MapPin, Hash, CheckCircle2, User as UserIcon, Upload } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ImportModal from '../components/ImportModal'
 
 export default function MeterReadings() {
   const [zones, setZones] = useState([])
@@ -10,6 +11,7 @@ export default function MeterReadings() {
   const [customers, setCustomers] = useState([])
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [showImport, setShowImport] = useState(false)
 
   // Selected customer to add reading for
   const [activeCustomer, setActiveCustomer] = useState(null)
@@ -62,6 +64,9 @@ export default function MeterReadings() {
           <div className="page-header-title">Meter Readings</div>
           <div className="page-header-sub">Field Agent Data Entry</div>
         </div>
+        <button className="btn btn-secondary" onClick={() => setShowImport(true)} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, padding: '8px 14px' }}>
+          <Upload size={14} /> Batch Import (CSV)
+        </button>
       </div>
 
       {!activeCustomer ? (
@@ -148,6 +153,23 @@ export default function MeterReadings() {
           </button>
         </div>
       )}
+
+      <ImportModal
+        isOpen={showImport}
+        onClose={() => setShowImport(false)}
+        title="Import Meter Readings"
+        sampleHeaders={['account_number', 'current_reading', 'reading_date']}
+        sampleRows={[
+          ['CBD-DOM-0001', '145.2', '2024-05-15'],
+          ['CBD-DOM-0002', '98.0', '2024-05-15'],
+          ['MIL-COM-0003', '312.4', '2024-05-15']
+        ]}
+        templateFileName="meter_readings_template.csv"
+        onImport={(formData) => meterReadingsApi.importCsv(formData)}
+        onSuccess={() => {
+          if (selZone || search) searchCustomers()
+        }}
+      />
     </div>
   )
 }

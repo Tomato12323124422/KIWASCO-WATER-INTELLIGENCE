@@ -67,6 +67,9 @@ export const billsApi = {
   monthlyTrend: (zone_id) => api.get('/api/bills/monthly-trend', { params: zone_id ? { zone_id } : {} }),
   zoneCompare: (year, month) => api.get('/api/bills/zone-comparison', { params: { year, month } }),
   recordPayment: (id, amount) => api.patch(`/api/bills/${id}/pay`, null, { params: { amount } }),
+  importCsv: (formData) => api.post('/api/bills/import', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
 }
 
 export const forecastsApi = {
@@ -116,4 +119,7 @@ export const dataQualityApi = {
 export const meterReadingsApi = {
   list: (params) => api.get('/api/meter-readings/', { params }),
   create: (data) => api.post('/api/meter-readings/', data),
+  importCsv: (formData) => api.post('/api/meter-readings/import', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
 }
