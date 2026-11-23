@@ -181,8 +181,9 @@ async def import_bills(
         )
 
     customers = db.query(models.Customer).all()
-    cust_by_acc = {c.account_number.strip().upper(): c for c in customers if c.account_number}
-    cust_by_meter = {c.meter_number.strip().upper(): c for c in customers if c.meter_number}
+    cust_by_acc = {c.account_no.strip().upper(): c for c in customers if getattr(c, "account_no", None)}
+    cust_by_meter = {c.meter_no.strip().upper(): c for c in customers if getattr(c, "meter_no", None)}
+    cust_by_id = {str(c.id): c for c in customers}
 
     imported_count = 0
     errors = []
@@ -205,7 +206,7 @@ async def import_bills(
             errors.append(f"Row {row_idx}: Non-numeric value in amounts/units")
             continue
 
-        customer = cust_by_acc.get(acc_val) or cust_by_meter.get(acc_val)
+        customer = cust_by_acc.get(acc_val) or cust_by_meter.get(acc_val) or cust_by_id.get(acc_val)
         if not customer:
             errors.append(f"Row {row_idx}: Account/Meter '{acc_val}' not found")
             continue

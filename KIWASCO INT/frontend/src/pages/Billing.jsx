@@ -186,9 +186,9 @@ export default function Billing() {
         title="Import Billing Records"
         sampleHeaders={['account_number', 'bill_date', 'units_consumed', 'amount_billed', 'amount_paid']}
         sampleRows={[
-          ['CBD-DOM-0001', '2024-05-01', '18.5', '1250.00', '1250.00'],
-          ['CBD-DOM-0002', '2024-05-01', '12.0', '850.00', '0.00'],
-          ['MIL-COM-0003', '2024-05-01', '45.0', '4800.00', '4800.00']
+          ['KWS010001', '2024-05-01', '18.5', '1250.00', '1250.00'],
+          ['KWS010002', '2024-05-01', '12.0', '850.00', '0.00'],
+          ['KWS020001', '2024-05-01', '45.0', '4800.00', '4800.00']
         ]}
         templateFileName="bills_import_template.csv"
         onImport={(formData) => billsApi.importCsv(formData)}

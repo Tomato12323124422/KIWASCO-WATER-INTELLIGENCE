@@ -28,11 +28,12 @@ export default function Reports() {
   const [data, setData]         = useState([])
   const [loading, setLoading]   = useState(true)
   const [availableYears, setAvailableYears] = useState([2024, 2023, 2022])
-  const [year, setYear]         = useState(2024)
+  const [year, setYear]         = useState(null)   // null = "not yet resolved"
   const [zoneId, setZoneId]     = useState('')
   const [downloading, setDown]  = useState(false)
 
   const loadData = async (yr, zId) => {
+    if (!yr) return
     try {
       const res = await reportsApi.summary(yr, zId || undefined)
       setData(res.data)
@@ -45,9 +46,12 @@ export default function Reports() {
     reportsApi.years().then(r => {
       if (r.data?.length) {
         setAvailableYears(r.data)
-        setYear(r.data[0])
+        // only set default year on first load; prefer the most recent year ≤ current year
+        setYear(prev => prev ?? r.data[0])
+      } else {
+        setYear(prev => prev ?? 2024)
       }
-    }).catch(() => {})
+    }).catch(() => { setYear(prev => prev ?? 2024) })
   }, [])
 
   useEffect(() => { loadData(year, zoneId) }, [year, zoneId])

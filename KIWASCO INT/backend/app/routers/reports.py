@@ -48,9 +48,11 @@ def get_report_years(
     db: Session = Depends(get_db),
     _=Depends(get_current_active_user),
 ):
+    current_year = date.today().year
     years = (
         db.query(extract("year", models.Bill.bill_date).label("yr"))
         .distinct()
+        .filter(extract("year", models.Bill.bill_date) <= current_year)
         .order_by(extract("year", models.Bill.bill_date).desc())
         .all()
     )

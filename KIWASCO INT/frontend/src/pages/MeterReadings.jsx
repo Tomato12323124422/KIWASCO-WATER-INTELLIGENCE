@@ -160,9 +160,9 @@ export default function MeterReadings() {
         title="Import Meter Readings"
         sampleHeaders={['account_number', 'current_reading', 'reading_date']}
         sampleRows={[
-          ['CBD-DOM-0001', '145.2', '2024-05-15'],
-          ['CBD-DOM-0002', '98.0', '2024-05-15'],
-          ['MIL-COM-0003', '312.4', '2024-05-15']
+          ['KWS010001', '145.2', '2024-05-15'],
+          ['KWS010002', '98.0', '2024-05-15'],
+          ['KWS020001', '312.4', '2024-05-15']
         ]}
         templateFileName="meter_readings_template.csv"
         onImport={(formData) => meterReadingsApi.importCsv(formData)}
