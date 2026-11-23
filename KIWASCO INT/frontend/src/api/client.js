@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '' : 'https://kiwasco-api-blnp.onrender.com')
+// In Vercel multi-service deployment, frontend & backend share the same domain (relative '').
+// VITE_API_URL can still be set if targeting a standalone external API (e.g. Render).
+const BASE_URL = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
   baseURL: BASE_URL,
