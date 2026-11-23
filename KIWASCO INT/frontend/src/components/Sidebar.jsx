@@ -102,9 +102,9 @@ export default function Sidebar() {
             border: '1px solid rgba(14,165,233,0.3)',
             padding: 4,
           }}>
-            <img src="/logo.png" alt="HydroSense" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <img src="/logo.png" alt="KIWASCO" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
-          <div className="sidebar-logo-title">HydroSense</div>
+          <div className="sidebar-logo-title">KIWASCO</div>
           <div className="sidebar-logo-sub">FORECASTING SYSTEM</div>
         </div>
 

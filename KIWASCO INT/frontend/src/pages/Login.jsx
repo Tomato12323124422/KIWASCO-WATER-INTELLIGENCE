@@ -20,7 +20,7 @@ export default function Login() {
     setLoading(true)
     try {
       await login(form.username, form.password)
-      toast.success('Welcome to HydroSense!')
+      toast.success('Welcome to KIWASCO!')
       navigate('/')
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Login failed. Check credentials.')
@@ -84,9 +84,9 @@ export default function Login() {
             border: '1px solid rgba(14,165,233,0.3)',
             padding: 8,
           }}>
-            <img src="/logo.png" alt="HydroSense Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <img src="/logo.png" alt="KIWASCO Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 6 }}>HydroSense</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 6 }}>KIWASCO</h1>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
             Sales &amp; Revenue Forecasting System<br/>
             <span style={{ fontSize: 11 }}>Enterprise Water Utility Intelligence</span>

@@ -5,7 +5,7 @@ services:
     runtime: python
     region: oregon
     plan: free
-    rootDir: backend
+    rootDir: KIWASCO INT/backend
     buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: python seed.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -13,7 +13,3 @@ services:
         generateValue: true
       - key: PYTHON_VERSION
         value: 3.11.9
-
-
-
-

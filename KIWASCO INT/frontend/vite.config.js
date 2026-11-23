@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'HydroSense Forecasting System',
-        short_name: 'HydroSense',
-        description: 'Sales and Revenue Forecasting System for HydroSense',
+        name: 'KIWASCO Forecasting System',
+        short_name: 'KIWASCO',
+        description: 'Sales and Revenue Forecasting System for KIWASCO',
         theme_color: '#070d1f',
         background_color: '#070d1f',
         display: 'standalone',
@@ -30,7 +30,22 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         changeOrigin: true,
       },
     },
