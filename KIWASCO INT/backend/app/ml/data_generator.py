@@ -142,5 +142,14 @@ def generate_bills(customer_id: int, zone_name: str, ctype: str, start_month: da
     return bills
 
 def get_zone_customer_count(zone_name: str, population: int) -> int:
-    """Approx 1 connection per 5.2 people (KIWASCO utility avg)."""
-    return int(population / 5.2)
+    """Proportionally scaled customer count based on zone demographics."""
+    proportional_counts = {
+        "Kondele & Manyatta": 220,
+        "Dunga & Nyalenda": 180,
+        "Nyamasaria & Kachok": 150,
+        "Central Business District": 130,
+        "Otonglo & Maseno": 110,
+        "Kibos & Chiga": 95,
+        "Milimani & Suburbs": 75,
+    }
+    return proportional_counts.get(zone_name, max(60, min(250, int(population / 500))))

@@ -40,8 +40,13 @@ def months_between(start: date, end: date) -> int:
 def seed():
     db: Session = SessionLocal()
     try:
-        # ── Guard: skip if already seeded ─────────────────────────────────
-        if db.query(models.Zone).count() > 0:
+        # ── Guard: skip if already seeded (unless --force/--reseed) ───────
+        if "--force" in sys.argv or "--reseed" in sys.argv or os.environ.get("RESEED") == "true":
+            print("Re-seed requested. Clearing existing records...")
+            for tbl in reversed(Base.metadata.sorted_tables):
+                db.execute(tbl.delete())
+            db.commit()
+        elif db.query(models.Zone).count() > 0:
             print("Database already seeded - skipping.")
             return
 
@@ -113,8 +118,6 @@ def seed():
 
         for zone in zone_objs:
             count = get_zone_customer_count(zone.name, zone.population)
-            # Cap for performance during seeding
-            count = min(count, 150)
             customer_dicts = generate_customers(zone.id, zone.name, count)
 
             for cd in customer_dicts:
