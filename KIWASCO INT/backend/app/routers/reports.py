@@ -43,6 +43,20 @@ def _get_monthly_data(db: Session, year: int, zone_id: Optional[int] = None):
         })
     return rows
 
+@router.get("/years")
+def get_report_years(
+    db: Session = Depends(get_db),
+    _=Depends(get_current_active_user),
+):
+    years = (
+        db.query(extract("year", models.Bill.bill_date).label("yr"))
+        .distinct()
+        .order_by(extract("year", models.Bill.bill_date).desc())
+        .all()
+    )
+    res = [int(y.yr) for y in years if y.yr]
+    return res if res else [2024, 2023, 2022]
+
 @router.get("/excel")
 def export_excel(
     year: Optional[int] = None,

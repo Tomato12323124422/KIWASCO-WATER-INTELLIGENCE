@@ -76,6 +76,7 @@ export const forecastsApi = {
 }
 
 export const reportsApi = {
+  years: () => api.get('/api/reports/years'),
   summary: (year, zone_id) => api.get('/api/reports/summary', { params: { year, zone_id } }),
   downloadXlsx: (year, zone_id) => {
     return api.get('/api/reports/excel', {

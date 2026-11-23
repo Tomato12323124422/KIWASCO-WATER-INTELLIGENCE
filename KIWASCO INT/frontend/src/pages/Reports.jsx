@@ -27,7 +27,8 @@ export default function Reports() {
   const [zones, setZones]       = useState([])
   const [data, setData]         = useState([])
   const [loading, setLoading]   = useState(true)
-  const [year, setYear]         = useState(new Date().getFullYear())
+  const [availableYears, setAvailableYears] = useState([2024, 2023, 2022])
+  const [year, setYear]         = useState(2024)
   const [zoneId, setZoneId]     = useState('')
   const [downloading, setDown]  = useState(false)
 
@@ -41,7 +42,12 @@ export default function Reports() {
 
   useEffect(() => {
     zonesApi.list().then(r => setZones(r.data)).catch(() => {})
-    loadData(year, zoneId)
+    reportsApi.years().then(r => {
+      if (r.data?.length) {
+        setAvailableYears(r.data)
+        setYear(r.data[0])
+      }
+    }).catch(() => {})
   }, [])
 
   useEffect(() => { loadData(year, zoneId) }, [year, zoneId])
@@ -101,7 +107,7 @@ export default function Reports() {
             </label>
             <select className="form-select" style={{ padding: '8px 12px' }}
               value={year} onChange={e => setYear(+e.target.value)}>
-              {[2022, 2023, 2024, 2025].map(y => <option key={y} value={y}>{y}</option>)}
+              {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
           </div>
           <div style={{ minWidth: 180 }}>
